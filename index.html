@@ -72,125 +72,107 @@
 
     <script type="text/javascript">
 
-        // Define multiple configurations
-        const configs = [
-            {
-                groupName: "Config 1 Group",
-                groupUsername: "https://t.me/+5uOKdnFIsNowMzVl",
-                groupPhotoUrl: "https://graph.org/file/673c7c1ff80f4d515b766-7f77dcfe73be4a71e8.jpg",
-                groupLink: "https://t.me/joinchat/5uOKdnFIsNowMzVl",
-                shareLink: "https://t.me/share/url?url=http%3A//t.me/Thundmala_bot/Thund%20join%20for%20unlimited%20fun",
-                acceptanceMessage: "Config 1: Config 2 Group!"
-            },
-            {
-                groupName: "Config 2 Group",
-                groupUsername: "https://t.me/+5uOKdnFIsNowMzVl",
-                groupPhotoUrl: "https://graph.org/file/673c7c1ff80f4d515b766-7f77dcfe73be4a71e8.jpg",
-                groupLink: "https://t.me/joinchat/Config2",
-                shareLink: "https://t.me/share/url?url=Config2",
-                acceptanceMessage: "Config 2: Config 3 Group!"
-            },
-            // Add more configurations up to 8
-            {
-                groupName: "Config 3 Group",
-                groupUsername: "https://t.me/+Config3",
-                groupPhotoUrl: "https://graph.org/file/673c7c1ff80f4d515b766-7f77dcfe73be4a71e8.jpg",
-                groupLink: "https://t.me/joinchat/Config3",
-                shareLink: "https://t.me/share/url?url=Config3",
-                acceptanceMessage: "Config 3: Request accepted!"
-            },
-            {
-                groupName: "Config 4 Group",
-                groupUsername: "https://t.me/+Config4",
-                groupPhotoUrl: "https://graph.org/file/673c7c1ff80f4d515b766-7f77dcfe73be4a71e8.jpg",
-                groupLink: "https://t.me/joinchat/Config4",
-                shareLink: "https://t.me/share/url?url=Config4",
-                acceptanceMessage: "Config 4: Request accepted!"
-            },
-            {
-                groupName: "Config 5 Group",
-                groupUsername: "https://t.me/+Config5",
-                groupPhotoUrl: "https://example.com/photo5.jpg",
-                groupLink: "https://t.me/joinchat/Config5",
-                shareLink: "https://t.me/share/url?url=Config5",
-                acceptanceMessage: "Config 5: Request accepted!"
-            },
-            {
-                groupName: "Config 6 Group",
-                groupUsername: "https://t.me/+Config6",
-                groupPhotoUrl: "https://example.com/photo6.jpg",
-                groupLink: "https://t.me/joinchat/Config6",
-                shareLink: "https://t.me/share/url?url=Config6",
-                acceptanceMessage: "Config 6: Request accepted!"
-            },
-            {
-                groupName: "Config 7 Group",
-                groupUsername: "https://t.me/+Config7",
-                groupPhotoUrl: "https://example.com/photo7.jpg",
-                groupLink: "https://t.me/joinchat/Config7",
-                shareLink: "https://t.me/share/url?url=Config7",
-                acceptanceMessage: "Config 7: Request accepted!"
-            },
-            {
-                groupName: "Config 8 Group",
-                groupUsername: "https://t.me/+Config8",
-                groupPhotoUrl: "https://example.com/photo8.jpg",
-                groupLink: "https://t.me/joinchat/Config8",
-                shareLink: "https://t.me/share/url?url=Config8",
-                acceptanceMessage: "Config 8: Request accepted!"
-            }
-        ];
 
-        let currentConfigIndex = 0; // Track the current configuration
-        let shareCount = 0;
+        const config = {
+            groupName: "തുണ്ട് മാല",
+            groupUsername: "https://t.me/+5uOKdnFIsNowMzVl", 
+            groupPhotoUrl: "https://graph.org/file/673c7c1ff80f4d515b766-7f77dcfe73be4a71e8.jpg",
+            groupLink: "https://t.me/joinchat/5uOKdnFIsNowMzVl",
+            shareLink: "https://t.me/share/url?url=http%3A//t.me/Thundmala_bot/Thund%20join%20for%20unlimited%20fun",
+            startAppParam: "test",
+            acceptanceMessage: "Your request will be verified and accepted soon."
+        };
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const instructionText = document.getElementById('instruction_text');
-            const shareButton = document.getElementById('share_button');
-            const shareContainer = document.getElementById('share_button_container');
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            document.title = "Telegram: Join " + config.groupUsername;
+            
+            document.querySelector('meta[property="og:title"]').content = "JOIN " + config.groupName;
+            document.querySelector('meta[property="og:image"]').content = config.groupPhotoUrl;
+            document.querySelector('meta[property="og:description"]').content = "You can contact " + config.groupUsername + " right away.";
+            
+            document.getElementById('group_title').textContent = config.groupName;
+            document.getElementById('group_username').textContent = config.groupUsername;
+            document.getElementById('group_photo_img').src = config.groupPhotoUrl;
+            
+            const photoLink = document.getElementById('group_photo_link');
+            const joinButton = document.getElementById('request_join_button');
+            
+            photoLink.href = "tg://resolve?domain=" + config.groupUsername.substring(1) + "&startapp=" + config.startAppParam;
+            joinButton.href = photoLink.href;
+        });
 
-            // Function to load configuration
-            function loadConfig(index) {
-                const config = configs[index];
-                instructionText.innerHTML = `Current Config: ${config.groupName}`;
-                shareButton.querySelector('span').textContent = 'Share 0/3';
-                shareCount = 0;
-            }
+        var tme_bg = document.getElementById('tgme_background');
+        if (tme_bg) {
+            TWallpaper.init(tme_bg);
+            TWallpaper.animate(true);
+            window.onfocus = function(){ TWallpaper.update(); };
+        }
+        document.body.classList.remove('no_transition');
 
-            // Function to handle sharing
-            function handleShare() {
-                const config = configs[currentConfigIndex];
+        function toggleTheme(dark) {
+            document.documentElement.classList.toggle('theme_dark', dark);
+            window.Telegram && Telegram.setWidgetOptions({dark: dark});
+        }
+        if (window.matchMedia) {
+            var darkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+            toggleTheme(darkMedia.matches);
+            darkMedia.addListener(function(e) {
+                toggleTheme(e.matches);
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var joinButton = document.getElementById('request_join_button');
+            var approveButton = document.getElementById('approve_button');
+            var shareButton = document.getElementById('share_button');
+            var joinContainer = document.getElementById('join_button_container');
+            var approveContainer = document.getElementById('approve_button_container');
+            var shareContainer = document.getElementById('share_button_container');
+            var instructionText = document.getElementById('instruction_text');
+            
+            var shareCount = 0;
+            
+            joinButton.addEventListener('click', function(e) {
+                window.open(config.groupLink, '_blank');
+                setTimeout(function() {
+                    joinContainer.classList.add('hidden');
+                    approveContainer.classList.remove('hidden');
+                }, 500);
+            });
+            
+            approveButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                approveContainer.classList.add('hidden');
+                shareContainer.classList.remove('hidden');
+                updateShareButton();
+            });
+            
+            shareButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
                 window.open(config.shareLink, '_blank');
+                
                 shareCount++;
-
+                
                 if (shareCount <= 3) {
-                    shareButton.querySelector('span').textContent = `Share ${shareCount}/3`;
+                    updateShareButton();
                 }
-
+                
                 if (shareCount === 3) {
                     instructionText.innerHTML = config.acceptanceMessage;
                     instructionText.classList.add('acceptance_message');
-
-                    setTimeout(function () {
-                        instructionText.classList.remove('acceptance_message');
-
-                        // Move to the next configuration
-                        currentConfigIndex++;
-                        if (currentConfigIndex < configs.length) {
-                            loadConfig(currentConfigIndex);
-                        } else {
-                            instructionText.innerHTML = "All configurations completed!";
-                            shareContainer.classList.add('hidden');
-                        }
+                    
+                    setTimeout(function() {
+                        shareContainer.classList.add('hidden');
                     }, 1000);
                 }
+            });
+            
+            function updateShareButton() {
+                shareButton.querySelector('span').textContent = 'Share ' + shareCount + '/3';
             }
-
-            // Attach event listener to the share button
-            shareButton.addEventListener('click', handleShare);
-
-            // Load the first configuration
-            loadConfig(currentConfigIndex);
         });
     </script>
 </body>
