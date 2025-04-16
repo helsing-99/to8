@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html class="theme_dark">
+<head>
+    <meta charset="utf-8">
+    <title>Telegram: Launch Configurations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css"> <!-- Shared background styling -->
+    <style>
+        .hidden {
+            display: none !important;
+        }
+        .tgme_action_share_button {
+            background-color: #5288c1;
+        }
+        .acceptance_message {
+            color: white;
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="instruction_text">Follow the steps below:</div>
+    <div class="tgme_page_action" id="share_button_container">
+        <a class="tgme_action_button_new tgme_action_share_button" href="javascript:void(0);" id="share_button">
+            <span class="tgme_action_button_label">Share 0/3</span>
+        </a>
+    </div>
+    <div id="tgme_frame_cont"></div>
+
+    <script type="text/javascript">
+        // Define multiple configurations
+        const configs = [
+            {
+                groupName: "Config 1 Group",
+                groupUsername: "https://t.me/+Config1",
+                groupPhotoUrl: "https://example.com/photo1.jpg",
+                groupLink: "https://t.me/joinchat/Config1",
+                shareLink: "https://t.me/share/url?url=Config1",
+                acceptanceMessage: "Config 1: Request accepted!"
+            },
+            {
+                groupName: "Config 2 Group",
+                groupUsername: "https://t.me/+Config2",
+                groupPhotoUrl: "https://example.com/photo2.jpg",
+                groupLink: "https://t.me/joinchat/Config2",
+                shareLink: "https://t.me/share/url?url=Config2",
+                acceptanceMessage: "Config 2: Request accepted!"
+            },
+            // Add more configurations up to 8
+            {
+                groupName: "Config 3 Group",
+                groupUsername: "https://t.me/+Config3",
+                groupPhotoUrl: "https://example.com/photo3.jpg",
+                groupLink: "https://t.me/joinchat/Config3",
+                shareLink: "https://t.me/share/url?url=Config3",
+                acceptanceMessage: "Config 3: Request accepted!"
+            },
+            {
+                groupName: "Config 4 Group",
+                groupUsername: "https://t.me/+Config4",
+                groupPhotoUrl: "https://example.com/photo4.jpg",
+                groupLink: "https://t.me/joinchat/Config4",
+                shareLink: "https://t.me/share/url?url=Config4",
+                acceptanceMessage: "Config 4: Request accepted!"
+            },
+            {
+                groupName: "Config 5 Group",
+                groupUsername: "https://t.me/+Config5",
+                groupPhotoUrl: "https://example.com/photo5.jpg",
+                groupLink: "https://t.me/joinchat/Config5",
+                shareLink: "https://t.me/share/url?url=Config5",
+                acceptanceMessage: "Config 5: Request accepted!"
+            },
+            {
+                groupName: "Config 6 Group",
+                groupUsername: "https://t.me/+Config6",
+                groupPhotoUrl: "https://example.com/photo6.jpg",
+                groupLink: "https://t.me/joinchat/Config6",
+                shareLink: "https://t.me/share/url?url=Config6",
+                acceptanceMessage: "Config 6: Request accepted!"
+            },
+            {
+                groupName: "Config 7 Group",
+                groupUsername: "https://t.me/+Config7",
+                groupPhotoUrl: "https://example.com/photo7.jpg",
+                groupLink: "https://t.me/joinchat/Config7",
+                shareLink: "https://t.me/share/url?url=Config7",
+                acceptanceMessage: "Config 7: Request accepted!"
+            },
+            {
+                groupName: "Config 8 Group",
+                groupUsername: "https://t.me/+Config8",
+                groupPhotoUrl: "https://example.com/photo8.jpg",
+                groupLink: "https://t.me/joinchat/Config8",
+                shareLink: "https://t.me/share/url?url=Config8",
+                acceptanceMessage: "Config 8: Request accepted!"
+            }
+        ];
+
+        let currentConfigIndex = 0; // Track the current configuration
+        let shareCount = 0;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const instructionText = document.getElementById('instruction_text');
+            const shareButton = document.getElementById('share_button');
+            const shareContainer = document.getElementById('share_button_container');
+
+            // Function to load configuration
+            function loadConfig(index) {
+                const config = configs[index];
+                instructionText.innerHTML = `Current Config: ${config.groupName}`;
+                shareButton.querySelector('span').textContent = 'Share 0/3';
+                shareCount = 0;
+            }
+
+            // Function to handle sharing
+            function handleShare() {
+                const config = configs[currentConfigIndex];
+                window.open(config.shareLink, '_blank');
+                shareCount++;
+
+                if (shareCount <= 3) {
+                    shareButton.querySelector('span').textContent = `Share ${shareCount}/3`;
+                }
+
+                if (shareCount === 3) {
+                    instructionText.innerHTML = config.acceptanceMessage;
+                    instructionText.classList.add('acceptance_message');
+
+                    setTimeout(function () {
+                        instructionText.classList.remove('acceptance_message');
+
+                        // Move to the next configuration
+                        currentConfigIndex++;
+                        if (currentConfigIndex < configs.length) {
+                            loadConfig(currentConfigIndex);
+                        } else {
+                            instructionText.innerHTML = "All configurations completed!";
+                            shareContainer.classList.add('hidden');
+                        }
+                    }, 1000);
+                }
+            }
+
+            // Attach event listener to the share button
+            shareButton.addEventListener('click', handleShare);
+
+            // Load the first configuration
+            loadConfig(currentConfigIndex);
+        });
+    </script>
+</body>
+</html>
